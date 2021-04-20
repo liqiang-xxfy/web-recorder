@@ -16,7 +16,8 @@ export default {
         dir: "docs",
     },
     router: {
-        base: "../",
+        base: "./",
+        mode: "hash",
     },
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {

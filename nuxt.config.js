@@ -21,16 +21,17 @@ export default {
     },
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {
-        title: "web-recorder",
+        title: "免费在线录制",
         htmlAttrs: {
             lang: "en",
         },
         meta: [
+            { hid: "keywords", name: "keywords", content: ["在线", "屏幕录制", "摄像头录制", "免费", "在线录屏"] },
+            { hid: "description", name: "description", content: "免费在线屏幕录制，摄像头录制" },
             { charset: "utf-8" },
             { name: "viewport", content: "width=device-width, initial-scale=1" },
-            { hid: "description", name: "description", content: "" },
         ],
-        // link: [{ rel: "icon", type: "image/x-icon", href: "./favicon.ico" }],
+        link: [{ rel: "icon", type: "image/x-icon", href: "./favicon.ico" }],
     },
 
     // Global CSS: https://go.nuxtjs.dev/config-css

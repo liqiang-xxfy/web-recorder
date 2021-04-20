@@ -21,8 +21,6 @@ Record.init = function(options, callbacks) {
     let browser = options.browser;
     if ((browser.name === "Chrome" || browser.name === "Edge") && Number(browser.major) >= 86 && window.showSaveFilePicker) {
         Record.isRunTime = true;
-    } else if (browser.name === "Opera" && Number(browser.major) >= 72 && window.showSaveFilePicker) {
-        Record.isRunTime = true;
     } else {
         Record.isRunTime = false;
     }
@@ -104,7 +102,7 @@ export default function Record(mCallback) {
                 _this.stop();
             };
         }
-        
+
         //创建MediaRecorder
         mediaRecorder = new MediaRecorder(stream, {
             mimeType: options.mimeType,

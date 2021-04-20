@@ -15,9 +15,9 @@ export default {
         // subFolders: false,
         dir: "docs",
     },
-    // router: {
-    //     base: "./",
-    // },
+    router: {
+        base: "../",
+    },
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {
         title: "web-recorder",

@@ -6,7 +6,7 @@
         "dev": "nuxt",
         "build": "nuxt build",
         "start": "nuxt start",
-        "generate": "nuxt generate"
+        "generate": "cross-env generate=true nuxt generate"
     },
     "dependencies": {
         "core-js": "^3.9.1",
@@ -16,5 +16,7 @@
         "nuxt": "^2.15.3",
         "ua-parser-js": "^0.7.28"
     },
-    "devDependencies": {}
+    "devDependencies": {
+        "cross-env": "^7.0.3"
+    }
 }

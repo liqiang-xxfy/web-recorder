@@ -20,7 +20,7 @@ Record.init = function(options, callbacks) {
     //浏览器检测是否支持showSaveFilePicker
     let browser = options.browser;
     if ((browser.name === "Chrome" || browser.name === "Edge") && Number(browser.major) >= 86 && window.showSaveFilePicker) {
-        Record.isRunTime = true;
+        Record.isRunTime = false;
     } else {
         Record.isRunTime = false;
     }
@@ -70,7 +70,13 @@ export default function Record(mCallback) {
     mCallback.onFinishRecord = typeof mCallback.onFinishRecord == "function" ? mCallback.onFinishRecord : Record.noop;
 
     var options = Record.options ? { ...Record.options } : {};
-    var fileHandle, writableStream, mediaRecorder, setIntervalId, recordeStream;
+    var fileHandle,
+        writableStream,
+        mediaRecorder,
+        setIntervalId,
+        recordeStream,
+        recordedChunks = [],
+        palyVideoEl;
 
     /**
      * 配置全局参数
@@ -85,7 +91,7 @@ export default function Record(mCallback) {
      */
     this.start = async function(videoEl) {
         if (!Record.support) return false;
-
+        palyVideoEl = videoEl;
         if (Record.isRunTime) {
             fileHandle = await window.showSaveFilePicker(options.opts);
             writableStream = await fileHandle.createWritable();
@@ -93,7 +99,7 @@ export default function Record(mCallback) {
         }
 
         //获取stream
-        let stream = await getMedia({}, true);
+        let stream = await getMedia({ audio: true, video: true }, true);
         if (!stream) return false;
         recordeStream = stream;
         let videoTrack = stream.getVideoTracks().length && stream.getVideoTracks()[0];
@@ -111,17 +117,24 @@ export default function Record(mCallback) {
         //接受录制数据回调
         mediaRecorder.ondataavailable = event => {
             console.log("data-available:", event.data);
-            if (event.data.size > 0 && setIntervalId) {
-                // recordedChunks.push(event.data);
-                writableStream.write(event.data);
-            }
-            if (!setIntervalId && writableStream) {
-                try {
-                    writableStream.close().then(() => {
-                        mCallback.onFinishRecord();
-                    });
-                } catch (e) {
-                    console.log(e);
+            if (Record.isRunTime) {
+                if (setIntervalId && event.data.size > 0) {
+                    // recordedChunks.push(event.data);
+                    writableStream.write(event.data);
+                } else if (!setIntervalId && writableStream) {
+                    try {
+                        writableStream.close().then(() => {
+                            mCallback.onFinishRecord();
+                        });
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }
+            } else {
+                if (setIntervalId && event.data.size > 0) {
+                    recordedChunks.push(event.data);
+                } else if (!setIntervalId) {
+                    mCallback.onFinishRecord(showDownload(recordedChunks));
                 }
             }
         };
@@ -154,7 +167,6 @@ export default function Record(mCallback) {
         setIntervalId && clearInterval(setIntervalId);
         setIntervalId = "";
         if (mediaRecorder && mediaRecorder.state !== "inactive") {
-            let stream = MediaRecorder.stream;
             mediaRecorder.stop();
             var tracks = recordeStream.getTracks();
             for (var mst of tracks) {
@@ -205,5 +217,29 @@ export default function Record(mCallback) {
                     });
             }
         });
+    }
+
+    function showDownload(Chunks) {
+        var blob = new Blob(Chunks, {
+            type: Record.options.mimeType,
+        });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        document.body.appendChild(a);
+        a.style = "display: none";
+        a.href = url;
+        var date = new Date();
+        var y = date.getFullYear();
+        var m = (date.getMonth() + 1 < 10 ? "0" : "") + date.getMonth();
+        var d = (date.getDate() < 10 ? "0" : "") + date.getDate();
+        var H = (date.getHours() < 10 ? "0" : "") + date.getHours();
+        var M = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
+        var S = (date.getSeconds() < 10 ? "0" : "") + date.getSeconds();
+        let fileName = y + m + d + H + M + S;
+        a.download = fileName;
+        // a.onclick = () => {
+        //     window.URL.revokeObjectURL(url);
+        // };
+        return { element: a, name: fileName };
     }
 }

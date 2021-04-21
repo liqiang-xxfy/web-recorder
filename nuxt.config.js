@@ -1,6 +1,6 @@
 var fs = require("fs");
 // var path = require("path");
-
+console.log(`generate`, process.env.generate);
 export default {
     server: {
         port: 3003,
@@ -11,14 +11,17 @@ export default {
             // ca: fs.readFileSync('./ca.pem')
         },
     },
-    // generate: {
-    //     // subFolders: false,
-    //     dir: "docs",
-    // },
-    // router: {
-    //     base: "./",
-    //     mode: "hash",
-    // },
+    generate: {
+        subFolders: false,
+        dir: "docs",
+    },
+    //generate时修改相对路径
+    router: process.env.generate
+        ? {
+              base: "./",
+              mode: "hash",
+          }
+        : {},
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {
         title: "免费在线录制",

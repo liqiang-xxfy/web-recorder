@@ -2,7 +2,7 @@
     <div id="home-page">
         <div class="content">
             <div class="video-box">
-                <video ref="videoEl" src="" autoplay webkit-playsinline playsinline preload="auto" muted controls></video>
+                <video ref="videoEl" src="" :poster="backimage" autoplay webkit-playsinline playsinline preload="auto" muted controls ></video>
                 <div class="recording" v-show="flicker && recording">
                     <svg
                         t="1618921750477"
@@ -28,12 +28,19 @@
                 <el-button v-else @click="stopRecord">停止录制</el-button>
                 <!-- <el-button>down</el-button> -->
             </div>
+            <div class="download-box">
+                <div class="download-item" v-for="(item, index) in downloadEl" :key="item + index">
+                    {{ "video" + index + ":" + item.name }}
+                    <el-button @click="() => item.element.click()">下载</el-button>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
 import UAParser from "ua-parser-js";
+
 export default {
     name: "index",
     data() {
@@ -42,6 +49,8 @@ export default {
             recording: false,
             flicker: false,
             setIntervalId: "",
+            downloadEl: [],
+            backimage:require("@/assets/images/video-back.webp")
         };
     },
     props: [],
@@ -75,14 +84,23 @@ export default {
                     window.onbeforeunload = () => "";
                     window.onunload = () => "";
                 },
-                onFinishRecord: () => {
-                    this.$message({
-                        message: "录制已完成！",
-                        type: "success",
-                    });
-                    this.recording = false;
-                    window.onbeforeunload = "";
-                    window.onunload = "";
+                onFinishRecord: downloadInfo => {
+                    if (downloadInfo && downloadInfo.element) {
+                        this.downloadEl.push(downloadInfo);
+                        this.recording = false;
+                        this.$message({
+                            message: "录制完成,请下载！",
+                            type: "success",
+                        });
+                    } else {
+                        this.$message({
+                            message: "录制已完成！",
+                            type: "success",
+                        });
+                        this.recording = false;
+                        window.onbeforeunload = "";
+                        window.onunload = "";
+                    }
                 },
             });
         },
@@ -151,17 +169,20 @@ export default {
         .video-box {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%;
+            padding-bottom: 54.25%;
             border: 10px solid #86868624;
             border-radius: 10px;
             box-shadow: 0px 2px 7px 1px #60626657;
             video {
+                // object-fit: cover;
+                background-size:cover;
                 position: absolute;
                 width: 100%;
                 height: 100%;
                 &:focus {
                     outline: -webkit-focus-ring-color auto 0px;
                 }
+                
             }
             .recording {
                 position: absolute;
@@ -179,6 +200,10 @@ export default {
         }
 
         .control-btn {
+            margin-top: 100px;
+            text-align: center;
+        }
+        .download-box {
             margin-top: 100px;
             text-align: center;
         }

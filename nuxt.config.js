@@ -18,7 +18,7 @@ export default {
     //generate时修改相对路径
     router: {
         // base: "./",
-        mode: "hash",
+        // mode: "hash",
     },
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {

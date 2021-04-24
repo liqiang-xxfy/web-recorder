@@ -1,7 +1,7 @@
 var fs = require("fs");
 // var path = require("path");
-console.log(`generate`, process.env.generate);
 export default {
+    target: "static",
     server: {
         port: 3003,
         host: "0.0.0.0",
@@ -16,12 +16,10 @@ export default {
         dir: "docs",
     },
     //generate时修改相对路径
-    router: process.env.generate
-        ? {
-              base: "./",
-              mode: "hash",
-          }
-        : {},
+    router: {
+        // base: "./",
+        mode: "hash",
+    },
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {
         title: "免费在线录制",

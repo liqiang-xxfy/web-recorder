@@ -2,7 +2,7 @@
     <div id="home-page">
         <div class="content">
             <div class="video-box">
-                <video ref="videoEl" src="" :poster="backimage" autoplay webkit-playsinline playsinline preload="auto" muted controls ></video>
+                <video ref="videoEl" src="" :poster="backimage" autoplay webkit-playsinline playsinline preload="auto" muted controls></video>
                 <div class="recording" v-show="flicker && recording">
                     <svg
                         t="1618921750477"
@@ -50,7 +50,7 @@ export default {
             flicker: false,
             setIntervalId: "",
             downloadEl: [],
-            backimage:require("@/assets/images/video-back.webp")
+            backimage: require("@/assets/images/video-back.webp"),
         };
     },
     props: [],
@@ -175,14 +175,13 @@ export default {
             box-shadow: 0px 2px 7px 1px #60626657;
             video {
                 // object-fit: cover;
-                background-size:cover;
+                background-size: cover;
                 position: absolute;
                 width: 100%;
                 height: 100%;
                 &:focus {
                     outline: -webkit-focus-ring-color auto 0px;
                 }
-                
             }
             .recording {
                 position: absolute;

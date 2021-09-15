@@ -89,7 +89,7 @@ export default function Record(mCallback) {
      *  获取媒体流开始录制
      * @params videoEl {Element} <video>标签
      */
-    this.start = async function(videoEl) {
+    this.start = async function(videoEl, isScreen) {
         if (!Record.support) return false;
         palyVideoEl = videoEl;
         if (Record.isRunTime) {
@@ -99,7 +99,7 @@ export default function Record(mCallback) {
         }
 
         //获取stream
-        let stream = await getMedia({ audio: true, video: true }, true);
+        let stream = await getMedia({ audio: true, video: true }, isScreen);
         if (!stream) return false;
         recordeStream = stream;
         let videoTrack = stream.getVideoTracks().length && stream.getVideoTracks()[0];

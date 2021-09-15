@@ -24,13 +24,14 @@
                 </div>
             </div>
             <div class="control-btn">
-                <el-button v-if="!recording" @click="startRecord">开始录制</el-button>
+                <el-button v-if="!recording" @click="startRecord(true)">录制屏幕</el-button>
+                <el-button v-if="!recording" @click="startRecord(false)">录制摄像头</el-button>
                 <el-button v-else @click="stopRecord">停止录制</el-button>
                 <!-- <el-button>down</el-button> -->
             </div>
             <div class="download-box">
                 <div class="download-item" v-for="(item, index) in downloadEl" :key="item + index">
-                    {{ "video" + index + ":" + item.name }}
+                    {{ "video" + (index + 1) + ": " + item.name }}
                     <el-button @click="() => item.element.click()">下载</el-button>
                 </div>
             </div>
@@ -104,11 +105,11 @@ export default {
                 },
             });
         },
-        startRecord() {
+        startRecord(isScreen) {
             if (!this.record || !this.$refs["videoEl"]) return;
             console.log("开始录制------");
             this.record
-                .start(this.$refs["videoEl"])
+                .start(this.$refs["videoEl"], isScreen)
                 .then(resp => {
                     console.log(`rsep`, resp);
                 })
@@ -205,6 +206,9 @@ export default {
         .download-box {
             margin-top: 100px;
             text-align: center;
+            .download-item {
+                margin-top: 5px;
+            }
         }
     }
 }

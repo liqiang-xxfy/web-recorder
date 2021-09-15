@@ -2,20 +2,7 @@
     <div id="home-page">
         <div class="content">
             <div class="video-box">
-                <video
-                    ref="videoEl"
-                    src=""
-                    :poster="backimage"
-                    autoplay
-                    preload="auto"
-                    webkit-playsinline="true"
-                    x-webkit-airplay="true"
-                    playsinline="true"
-                    x5-video-player-type="h5"
-                    x5-video-player-fullscreen="true"
-                    muted
-                    controls
-                ></video>
+                <video ref="videoEl" src="" :poster="backimage" autoplay webkit-playsinline playsinline preload="auto" muted controls></video>
                 <div class="recording" v-show="flicker && recording">
                     <svg
                         t="1618921750477"

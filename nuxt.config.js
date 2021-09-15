@@ -14,6 +14,9 @@ export default {
     generate: {
         subFolders: false,
         dir: "docs",
+        cache: {
+            ignore: ["CNAME"], // ignore changes applied on this file
+        },
     },
     //generate时修改相对路径
     router: {

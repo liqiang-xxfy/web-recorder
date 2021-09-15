@@ -1,9 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### Node template
 # Logs
-CNAME
 docs/CNAME
-/docs/CNAME
 
 /logs
 *.log

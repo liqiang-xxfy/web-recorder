@@ -62,21 +62,15 @@ Record.init = function(options, callbacks) {
 };
 
 export default function Record(mCallback) {
-    var _this = this;
+    let _this = this;
     mCallback = mCallback || {};
     mCallback.onended = typeof mCallback.onended == "function" ? mCallback.onended : Record.noop;
     mCallback.onerror = typeof mCallback.onerror == "function" ? mCallback.onerror : Record.noop;
     mCallback.onStartRecord = typeof mCallback.onStartRecord == "function" ? mCallback.onStartRecord : Record.noop;
     mCallback.onFinishRecord = typeof mCallback.onFinishRecord == "function" ? mCallback.onFinishRecord : Record.noop;
 
-    var options = Record.options ? { ...Record.options } : {};
-    var fileHandle,
-        writableStream,
-        mediaRecorder,
-        setIntervalId,
-        recordeStream,
-        recordedChunks = [],
-        palyVideoEl;
+    let options = Record.options ? { ...Record.options } : {};
+    let fileHandle, writableStream, mediaRecorder, setIntervalId, recordeStream, palyVideoEl;
 
     /**
      * 配置全局参数
@@ -90,6 +84,7 @@ export default function Record(mCallback) {
      * @params videoEl {Element} <video>标签
      */
     this.start = async function(videoEl, isScreen) {
+        let recordedChunks = [];
         if (!Record.support) return false;
         palyVideoEl = videoEl;
         if (Record.isRunTime) {

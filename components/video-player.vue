@@ -44,7 +44,7 @@ export default {
         };
     },
     mounted() {
-        console.log("this is current player instance object", this.myVideoPlayer);
+        // console.log("this is current player instance object", this.myVideoPlayer);
     },
     methods: {
         // listen event

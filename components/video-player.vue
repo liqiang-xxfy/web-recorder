@@ -28,6 +28,7 @@ export default {
 
             // videojs options
             playerOptions: {
+                playsinline: true,
                 muted: true,
                 // language: "zh-cn",
                 // playbackRates: [0.7, 1.0, 1.5, 2.0],
@@ -39,7 +40,6 @@ export default {
                 ],
                 autoplay: true,
                 poster: require("@/assets/images/video-back.webp"),
-                // poster: "/static/images/author.jpg",
             },
         };
     },

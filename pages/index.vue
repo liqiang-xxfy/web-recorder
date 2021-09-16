@@ -35,7 +35,7 @@
                     <div class="url-video-box">
                         <video
                             :src="item.url"
-                            preload="false"
+                            preload="none"
                             playsinline="playsinline"
                             webkit-playsinline="true"
                             x5-playsinline="true"

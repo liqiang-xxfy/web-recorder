@@ -25,15 +25,30 @@
                 </div>
             </div>
             <div class="control-btn">
-                <el-button v-if="!recording" @click="startRecord(true)">录制屏幕</el-button>
-                <el-button v-if="!recording" @click="startRecord(false)">录制摄像头</el-button>
-                <el-button v-else @click="stopRecord">停止录制</el-button>
+                <el-button key="screen-record" v-if="!recording" type="primary" @click="startRecord(true)">录制屏幕</el-button>
+                <el-button key="camera-record" v-if="!recording" type="primary" @click="startRecord(false)">录制摄像头</el-button>
+                <el-button key="stop-record" v-else @click="stopRecord" type="warning">停止录制</el-button>
                 <!-- <el-button>down</el-button> -->
             </div>
             <div class="download-box">
-                <div class="download-item" v-for="(item, index) in downloadEl" :key="item + index">
-                    {{ "video" + (index + 1) + ": " + item.name }}
-                    <el-button @click="() => item.element.click()">下载</el-button>
+                <div class="download-item" v-for="(item, index) in downloadEl" :key="item.name + index">
+                    <div class="url-video-box">
+                        <video
+                            :src="item.url"
+                            preload="false"
+                            playsinline="playsinline"
+                            webkit-playsinline="true"
+                            x5-playsinline="true"
+                            x5-video-player-type="h5"
+                            x5-video-player-fullscreen="false"
+                            controls
+                        ></video>
+                    </div>
+                    <div class="meta-box">
+                        <!-- <span class="title">{{ "video" + (index + 1) + ": " + item.name }}</span> -->
+                        <span class="title">{{ item.name }}</span>
+                        <span class="download-link" @click="() => item.element.click()">下载</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -79,6 +94,8 @@ export default {
     created() {},
     beforeMount() {},
     mounted() {
+        window._this = this;
+
         this.initServer();
 
         //获取video标签
@@ -182,11 +199,10 @@ export default {
 
     .content {
         height: 100%;
-        max-width: 500px;
+        max-width: 750px;
         margin: auto;
-        padding-top: 100px;
+        padding-top: 50px;
         padding-bottom: 50px;
-        
 
         .video-box {
             position: relative;
@@ -225,14 +241,48 @@ export default {
         }
 
         .control-btn {
-            margin-top: 100px;
+            margin-top: 50px;
             text-align: center;
         }
         .download-box {
-            margin-top: 100px;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: flex-start;
+            margin-top: 50px;
             text-align: center;
             .download-item {
+                padding: 10px;
+                width: 240px;
                 margin-top: 5px;
+                border-radius: 5px;
+                .url-video-box {
+                    width: 100%;
+                    height: 135px;
+                    border-radius: 5px;
+                    overflow: hidden;
+                    background: #000;
+                    box-shadow: 0px 2px 7px 1px rgba(96, 98, 102, 0.34118);
+
+                    video {
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+
+                .meta-box {
+                    font-size: 15px;
+                    color: #666;
+                    margin-top: 5px;
+                    .title {
+                        word-break: break-all;
+                    }
+                    .download-link {
+                        color: #3989f7;
+                        cursor: pointer;
+                    }
+                }
             }
         }
         @media only screen and (max-width: 500px) {
@@ -242,6 +292,7 @@ export default {
                 margin-top: 40px;
             }
             .download-box {
+                justify-content: center;
                 margin-top: 40px;
             }
         }

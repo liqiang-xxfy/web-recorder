@@ -30,7 +30,7 @@ Record.init = function(options, callbacks) {
     }
     if (navigator.mediaDevices.getUserMedia === undefined) {
         navigator.mediaDevices.getUserMedia = function(constraints) {
-            var getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+            let getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
             if (!getUserMedia) {
                 return Promise.reject(new Error("getUserMedia is not implemented in this browser"));
             }
@@ -41,7 +41,7 @@ Record.init = function(options, callbacks) {
     }
     if (navigator.mediaDevices.getDisplayMedia === undefined) {
         navigator.mediaDevices.getDisplayMedia = function(constraints) {
-            var getDisplayMedia = navigator.getDisplayMedia;
+            let getDisplayMedia = navigator.getDisplayMedia;
             if (!getDisplayMedia) {
                 return Promise.reject(new Error("getDisplayMedia is not implemented in this browser"));
             }
@@ -164,8 +164,8 @@ export default function Record(mCallback) {
         setIntervalId = "";
         if (mediaRecorder && mediaRecorder.state !== "inactive") {
             mediaRecorder.stop();
-            var tracks = recordeStream.getTracks();
-            for (var mst of tracks) {
+            let tracks = recordeStream.getTracks();
+            for (let mst of tracks) {
                 if (mst) {
                     mst.stop();
                 }
@@ -216,26 +216,27 @@ export default function Record(mCallback) {
     }
 
     function showDownload(Chunks) {
-        var blob = new Blob(Chunks, {
+        let blob = new Blob(Chunks, {
             type: Record.options.mimeType,
         });
-        var url = URL.createObjectURL(blob);
-        var a = document.createElement("a");
+        let url = URL.createObjectURL(blob);
+        let a = document.createElement("a");
         document.body.appendChild(a);
         a.style = "display: none";
         a.href = url;
-        var date = new Date();
-        var y = date.getFullYear();
-        var m = (date.getMonth() + 1 < 10 ? "0" : "") + date.getMonth();
-        var d = (date.getDate() < 10 ? "0" : "") + date.getDate();
-        var H = (date.getHours() < 10 ? "0" : "") + date.getHours();
-        var M = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
-        var S = (date.getSeconds() < 10 ? "0" : "") + date.getSeconds();
-        let fileName = y + m + d + H + M + S;
+        let date = new Date();
+        // let y = date.getFullYear();
+        // let m = (date.getMonth() + 1 < 10 ? "0" : "") + date.getMonth();
+        // let d = (date.getDate() < 10 ? "0" : "") + date.getDate();
+        // let H = (date.getHours() < 10 ? "0" : "") + date.getHours();
+        // let M = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
+        // let S = (date.getSeconds() < 10 ? "0" : "") + date.getSeconds();
+        // let fileName = y + m + d + H + M + S;
+        let fileName = date.toLocaleString();
         a.download = fileName;
         // a.onclick = () => {
         //     window.URL.revokeObjectURL(url);
         // };
-        return { element: a, name: fileName };
+        return { element: a, name: fileName, url: url };
     }
 }

@@ -2,19 +2,8 @@
     <div id="home-page">
         <div class="content">
             <div class="video-box">
-                <video
-                    ref="videoEl"
-                    src=""
-                    :poster="backimage"
-                    autoplay
-                    webkit-playsinline="true"
-                    x-webkit-airplay="true"
-                    playsinline="true"
-                    x5-video-player-type="h5"
-                    x5-video-player-fullscreen="true"
-                    muted
-                    controls
-                ></video>
+                <VideoPlayer class="video-palyer" ref="video-palyer" />
+                <!-- <video ref="videoEl" src="" :poster="backimage" autoplay webkit-playsinline playsinline preload="auto" muted controls></video> -->
                 <div class="recording" v-show="flicker && recording">
                     <svg
                         t="1618921750477"
@@ -53,6 +42,7 @@
 
 <script type="text/ecmascript-6">
 import UAParser from "ua-parser-js";
+import VideoPlayer from "~/components/video-player.vue";
 
 export default {
     name: "index",
@@ -63,7 +53,8 @@ export default {
             flicker: false,
             setIntervalId: "",
             downloadEl: [],
-            backimage: require("@/assets/images/video-back.webp"),
+
+            videoEl: null,
         };
     },
     props: [],
@@ -82,6 +73,29 @@ export default {
         },
     },
     computed: {},
+
+    components: { VideoPlayer },
+    beforeCreate() {},
+    created() {},
+    beforeMount() {},
+    mounted() {
+        this.initServer();
+
+        //获取video标签
+        try {
+            let player = this.$refs["video-palyer"].myVideoPlayer;
+            this.videoEl = (player.tech && player.tech({ IWillNotUseThisInPlugins: true }).el()) || null;
+            if (!this.videoEl) {
+                console.log("no video node");
+                throw new Error("no video");
+            }
+        } catch (e) {
+            let el = document.querySelector("video");
+            if (el) {
+                this.videoEl = el;
+            }
+        }
+    },
     methods: {
         initServer() {
             let uaObj = new UAParser();
@@ -118,10 +132,11 @@ export default {
             });
         },
         startRecord(isScreen) {
-            if (!this.record || !this.$refs["videoEl"]) return;
+            if (!this.videoEl) return;
+
             console.log("开始录制------");
             this.record
-                .start(this.$refs["videoEl"], isScreen)
+                .start(this.videoEl, isScreen)
                 .then(resp => {
                     console.log(`rsep`, resp);
                 })
@@ -133,7 +148,6 @@ export default {
             //     let stream = this.remoteHandles[item].webrtcStuff.remoteStream;
             //     stream && record.connectAudio(stream);
             // });
-
             //////////////////////
         },
         stopRecord() {
@@ -144,13 +158,6 @@ export default {
             console.log("下载录制------");
             window.record.download(Object.values(this.remoteHandles)[0].webrtcStuff.remoteStream);
         },
-    },
-    components: {},
-    beforeCreate() {},
-    created() {},
-    beforeMount() {},
-    mounted() {
-        this.initServer();
     },
     beforeUpdate() {},
     updated() {},
@@ -178,24 +185,30 @@ export default {
         max-width: 500px;
         margin: auto;
         padding-top: 100px;
+        padding-bottom: 50px;
+        
 
         .video-box {
             position: relative;
             width: 100%;
-            padding-bottom: 54.25%;
+            // padding-bottom: 54.25%;
             border: 10px solid #86868624;
             border-radius: 10px;
             box-shadow: 0px 2px 7px 1px #60626657;
-            video {
-                // object-fit: cover;
-                background-size: cover;
-                position: absolute;
+            .video-palyer {
                 width: 100%;
                 height: 100%;
-                &:focus {
-                    outline: -webkit-focus-ring-color auto 0px;
-                }
             }
+            // video {
+            //     // object-fit: cover;
+            //     background-size: cover;
+            //     position: absolute;
+            //     width: 100%;
+            //     height: 100%;
+            //     &:focus {
+            //         outline: -webkit-focus-ring-color auto 0px;
+            //     }
+            // }
             .recording {
                 position: absolute;
                 right: 20px;
@@ -220,6 +233,16 @@ export default {
             text-align: center;
             .download-item {
                 margin-top: 5px;
+            }
+        }
+        @media only screen and (max-width: 500px) {
+            padding-top: 40px;
+            max-width: 300px;
+            .control-btn {
+                margin-top: 40px;
+            }
+            .download-box {
+                margin-top: 40px;
             }
         }
     }

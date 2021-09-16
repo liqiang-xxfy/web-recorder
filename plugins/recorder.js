@@ -142,11 +142,12 @@ export default function Record(mCallback) {
         if (videoEl) {
             console.log(`"srcObject" in video`, "srcObject" in videoEl);
             try {
-                if ("srcObject" in videoEl) {
+                if (videoEl || "srcObject" in videoEl) {
                     videoEl.srcObject = stream;
                 } else {
                     videoEl.src = window.URL.createObjectURL(stream);
                 }
+                videoEl.play();
             } catch (error) {
                 console.log(`error`, error);
                 return false;

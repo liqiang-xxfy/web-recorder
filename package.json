@@ -14,7 +14,8 @@
         "less": "^3.10.3",
         "less-loader": "^5.0.0",
         "nuxt": "^2.15.3",
-        "ua-parser-js": "^0.7.28"
+        "ua-parser-js": "^0.7.28",
+        "vue-video-player": "^5.0.2"
     },
     "devDependencies": {
         "cross-env": "^7.0.3"

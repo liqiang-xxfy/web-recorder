@@ -14,9 +14,6 @@ export default {
     generate: {
         subFolders: false,
         dir: "docs",
-        cache: {
-            ignore: ["CNAME"], // ignore changes applied on this file
-        },
     },
     //generate时修改相对路径
     router: {
@@ -39,10 +36,16 @@ export default {
     },
 
     // Global CSS: https://go.nuxtjs.dev/config-css
-    css: ["element-ui/lib/theme-chalk/index.css"],
+    css: ["element-ui/lib/theme-chalk/index.css", "video.js/dist/video-js.css"],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-    plugins: ["@/plugins/element-ui"],
+    plugins: [
+        "@/plugins/element-ui",
+        {
+            src: "@/plugins/video-player.js",
+            ssr: false,
+        },
+    ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
     components: true,

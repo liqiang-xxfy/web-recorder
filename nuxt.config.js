@@ -1,7 +1,7 @@
 var fs = require("fs");
 // var path = require("path");
 export default {
-    target: "static",
+    target: "server",
     server: {
         port: 3003,
         host: "0.0.0.0",
@@ -11,10 +11,10 @@ export default {
             // ca: fs.readFileSync('./ca.pem')
         },
     },
-    generate: {
-        subFolders: false,
-        dir: "docs",
-    },
+    // generate: {
+    //     subFolders: false,
+    //     dir: "docs",
+    // },
     //generate时修改相对路径
     router: {
         // base: "./",
